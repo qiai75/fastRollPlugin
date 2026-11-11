@@ -1,0 +1,39 @@
+<idea-plugin>
+    <id>com.qg.fastscroll</id>
+    <name>Fast Scroll</name>
+    <vendor>qg</vendor>
+
+    <description><![CDATA[
+        Hold <b>Alt / Option</b> while scrolling the mouse wheel to scroll up to 20x faster. Without the modifier
+        key, scrolling behaves exactly as before, so the default IDE experience stays untouched.
+        <br/>
+        <br/>
+        按住 <b>Alt / Option</b> 滚动鼠标滚轮时按倍数加速，不按修饰键时保持 IDE 原速，不影响系统其它程序。
+        加速倍数（1~20）与修饰键（Alt / Ctrl / Shift / Meta）均可在
+        <b>Settings / Preferences → Tools → Fast Scroll</b> 中调整，改完立即生效，无需重启。
+        <br/>
+        <br/>
+        典型用法：在几千行的长文件或超长日志里，按住 Option 滚一格等于滚三格。
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.qg.fastscroll.FastScrollSettings"/>
+        <applicationService serviceImplementation="com.qg.fastscroll.WheelAcceleratorService"/>
+        <!-- 不设 parentId：设置页直接挂在设置树顶层，避免不同 IDE 版本分组 id 差异导致整项不显示 -->
+        <applicationConfigurable id="com.qg.fastscroll.settings"
+                                 displayName="Fast Scroll"
+                                 instance="com.qg.fastscroll.FastScrollConfigurable"/>
+        <postStartupActivity implementation="com.qg.fastscroll.FastScrollStartupActivity"/>
+    </extensions>
+
+    <actions>
+        <action id="com.qg.fastscroll.OpenSettings"
+                class="com.qg.fastscroll.OpenSettingsAction"
+                text="Fast Scroll Settings…"
+                description="打开滚轮加速设置">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
